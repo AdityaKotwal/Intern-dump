@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 //#include "str.h"
-#define DST "/testOutDir/dump2"
+#define DST "/Users/adityakotwal/Intern-dump/dump2"
 #define MAX_BLKS 1024
 #define SIZE_BLK 4096 // Each block is 4K
 
@@ -16,15 +16,15 @@ unsigned long
    int buf_pos;
    FILE* op;
    unsigned long offset;
-   offset = MAX_BLKS * SIZE_BLK * (unsigned long)callNo;
+   offset = MAX_BLKS * SIZE_BLK * (unsigned long)(callNo - 1);
    op = fopen(DST,"ab");
    buf_pos = 0;
    while(buf_pos < len){
-      Str_Strcpy(hash, buf + buf_pos, 16);
+      strncpy(hash, buf + buf_pos, 32);
       hash[16 * 2] = '\0';
       fprintf(op, "%s,%s,%lu\n", UID, hash, offset);
       offset += SIZE_BLK;
-      buf_pos += 16;
+      buf_pos += 32;
    }
 
    fclose(op);
@@ -34,10 +34,10 @@ unsigned long
 void testCase(){
    char buf[100];
    char uid[100];
-   strcpy(buf,"12345678911234561234567890123456",1);
-   strcat(buf,"12345678911234561234567890123456",2);
+   strcpy(buf,"12345678911234561234567890123456");
+   strcat(buf,"21345678911234561234567890123456");
    strcpy(uid,"abc");
-   readFromBuffer(buf,32,uid,1);
+   bufferToFile(buf,strlen(buf),uid,1);
 }
 
 int main(){
